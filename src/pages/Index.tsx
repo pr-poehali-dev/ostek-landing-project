@@ -125,14 +125,17 @@ function Header() {
 // декоративная полоска с точками — фирменный элемент Остек
 function DotsBar() {
   return (
-    <div className="flex items-center gap-2 mb-8">
+    <div className="flex items-center gap-3 mb-8">
       {[...Array(5)].map((_, i) => (
-        <span key={i} className="rounded-full" style={{
+        <span key={i} className="rounded-full shrink-0" style={{
           width: 10, height: 10,
           background: i < 4 ? C.btn : "transparent",
           border: i >= 4 ? `2px solid ${C.btn}` : "none",
         }} />
       ))}
+      <span className="text-xs font-semibold uppercase tracking-widest ml-1" style={{ color: C.btn }}>
+        Будущее создается
+      </span>
     </div>
   );
 }
