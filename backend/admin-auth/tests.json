@@ -1,0 +1,17 @@
+{
+  "tests": [
+    {
+      "name": "Login with wrong password",
+      "method": "POST",
+      "path": "/",
+      "body": {"username": "admin", "password": "wrongpass"},
+      "expectedStatus": 401
+    },
+    {
+      "name": "Check token without token",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401
+    }
+  ]
+}
