@@ -171,13 +171,7 @@ function Hero() {
               >
                 Узнать стоимость <Icon name="ArrowRight" size={16} />
               </a>
-              <a href="#footer" className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 transition-colors"
-                style={{ border: `2px solid ${C.outline}`, color: C.outline, background: "transparent" }}
-                onMouseEnter={e => { e.currentTarget.style.background = C.outline; e.currentTarget.style.color = C.white; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = C.outline; }}
-              >
-                Запросить цену
-              </a>
+
             </div>
             <div className="flex gap-6 mt-10 pt-8" style={{ borderTop: `1px solid ${C.border}` }}>
               {[["15+", "лет опыта"], ["200+", "стендов"], ["40+", "стран"]].map(([n, l]) => (
