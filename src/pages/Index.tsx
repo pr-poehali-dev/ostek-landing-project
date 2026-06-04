@@ -11,7 +11,10 @@ function OstecLogo({ invert = false, className = "" }: { invert?: boolean; class
       src={LOGO_IMAGE}
       alt="Остек"
       className={className}
-      style={{ objectFit: "contain", filter: invert ? "brightness(0) invert(1)" : "none" }}
+      style={{
+        objectFit: "contain",
+        filter: invert ? "brightness(0) invert(1)" : "brightness(0)",
+      }}
     />
   );
 }
