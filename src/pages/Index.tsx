@@ -5,28 +5,22 @@ const PRODUCT_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-
 const STYLE_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9a8169e7-ece4-4278-bd68-1fe71872b56b.png";
 const LOGO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9b36bded-2f56-4896-bbcd-f789d81b7b48.jpg";
 
+const LOGO_DARK = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/cf7037bc-ac3d-4c44-a48f-096199359606.jpg";
+
 function OstecLogo({ invert = false, className = "" }: { invert?: boolean; className?: string }) {
-  const c = invert ? "#FFFFFF" : "#111111";
-  const s = invert ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)";
   return (
-    <svg className={className} viewBox="0 0 180 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Большой внешний эллипс */}
-      <ellipse cx="30" cy="30" rx="26" ry="11" stroke={c} strokeWidth="1.8" fill="none"/>
-      {/* Малый внутренний эллипс */}
-      <ellipse cx="30" cy="30" rx="16" ry="6.5" stroke={c} strokeWidth="1.4" fill="none"/>
-      {/* Вертикальный стебель */}
-      <line x1="30" y1="8" x2="30" y2="52" stroke={c} strokeWidth="1.8"/>
-      {/* Левый лист */}
-      <path d="M30 18 C27 14 20 13 20 18 C20 22 27 22 30 18Z" fill={c}/>
-      {/* Правый лист */}
-      <path d="M30 18 C33 14 40 13 40 18 C40 22 33 22 30 18Z" fill={c}/>
-      {/* Кружок на вершине стебля */}
-      <circle cx="30" cy="10" r="2.5" fill={c}/>
-      {/* Текст ostec */}
-      <text x="64" y="32" fill={c} fontSize="20" fontWeight="800" fontFamily="Montserrat, Arial Black, Arial, sans-serif" letterSpacing="1">ostec</text>
-      {/* Подпись группа компаний */}
-      <text x="64" y="46" fill={s} fontSize="7.5" fontFamily="Montserrat, Arial, sans-serif" letterSpacing="1.8" fontWeight="500">группа компаний</text>
-    </svg>
+    <img
+      src={LOGO_DARK}
+      alt="Остек — группа компаний"
+      className={className}
+      style={{
+        objectFit: "contain",
+        // screen убирает тёмный фон JPG на тёмных секциях
+        // на светлом — инвертируем весь логотип в чёрный
+        mixBlendMode: invert ? "screen" : "multiply",
+        filter: invert ? "none" : "invert(1)",
+      }}
+    />
   );
 }
 
