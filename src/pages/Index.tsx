@@ -1,137 +1,154 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const HERO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/files/96836f10-7541-43b9-a4e5-8deb497e83b5.jpg";
+const PRODUCT_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/files/8a67a025-66f9-4318-adb8-44d97b0be725.jpg";
+
+// SVG логотип Остек (воссоздан по фирменному стилю)
+function OstecLogo({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="6" width="28" height="28" rx="2" fill="#0055A4" />
+      <text x="14" y="25" textAnchor="middle" fill="white" fontSize="14" fontWeight="700" fontFamily="Arial, sans-serif">О</text>
+      <text x="36" y="28" fill="#0055A4" fontSize="19" fontWeight="700" fontFamily="Arial, sans-serif" letterSpacing="1">СТЕК</text>
+    </svg>
+  );
+}
 
 const specs = [
-  { param: "Грузоподъёмность", values: ["до 5 кг", "до 25 кг", "до 100 кг"] },
-  { param: "Диапазон углов", values: ["±180°", "±360° / неогр.", "±360° / неогр."] },
-  { param: "Скорость вращения", values: ["до 400 °/с", "до 300 °/с", "до 150 °/с"] },
-  { param: "Угловая погрешность", values: ["±0.001°", "±0.003°", "±0.005°"] },
-  { param: "Степеней свободы", values: ["1 DOF", "3 DOF", "6 DOF"] },
-  { param: "Интерфейс управления", values: ["USB / RS-422", "Ethernet / CAN", "Ethernet / CAN"] },
-  { param: "Рабочая температура", values: ["-10…+50 °C", "-20…+60 °C", "-40…+70 °C"] },
+  { param: "Грузоподъёмность", os1000: "до 5 кг", os3000: "до 25 кг", os6500: "до 100 кг" },
+  { param: "Диапазон углов", os1000: "±180°", os3000: "±360°", os6500: "Неограничен" },
+  { param: "Скорость вращения", os1000: "до 400 °/с", os3000: "до 300 °/с", os6500: "до 150 °/с" },
+  { param: "Погрешность позиц.", os1000: "±0.001°", os3000: "±0.003°", os6500: "±0.005°" },
+  { param: "Степеней свободы", os1000: "1 DOF", os3000: "3 DOF", os6500: "6 DOF" },
+  { param: "Интерфейс", os1000: "USB / RS-422", os3000: "Ethernet / CAN", os6500: "Ethernet / CAN" },
 ];
 
 const advantages = [
   {
     icon: "Crosshair",
     title: "Субмикронная точность",
-    desc: "Угловая погрешность до ±0.001° обеспечивает достоверные результаты испытаний инерциальных навигационных систем и высокоточных MEMS-гироскопов.",
-    tag: "±0.001°",
+    desc: "Погрешность позиционирования от ±0.001°. Подходит для калибровки высокоточных МЭМС-гироскопов и БИНС.",
   },
   {
     icon: "Shield",
-    title: "Надёжность MIL-STD",
-    desc: "Стенды соответствуют требованиям MIL-STD-810H и ГОСТ РВ. Подтверждены испытаниями на виброустойчивость, термоудар и электромагнитную совместимость.",
-    tag: "MIL-STD-810H",
+    title: "Соответствие MIL-STD-810H",
+    desc: "Продукция прошла испытания по ГОСТ РВ и MIL-STD-810H. Поставляется с полным пакетом документации и метрологической аттестацией.",
   },
   {
     icon: "Plug",
-    title: "Интеграция с вашим ПО",
-    desc: "Открытый API на базе Ethernet, поддержка LabVIEW, MATLAB/Simulink и Python SDK. Готовые драйверы под Windows / Linux для быстрого ввода в эксплуатацию.",
-    tag: "Open API",
+    title: "Открытый API",
+    desc: "Поддержка LabVIEW, MATLAB/Simulink и Python SDK. Драйверы для Windows / Linux. Интеграция от 1 дня.",
   },
 ];
 
 const applications = [
-  { icon: "Plane", label: "Авионика", desc: "Тестирование ИНС, БИНС, AHRS для авиационной и беспилотной техники" },
-  { icon: "Bot", label: "Робототехника", desc: "Калибровка IMU и сенсорных модулей промышленных манипуляторов" },
-  { icon: "Car", label: "Автопром", desc: "Верификация систем стабилизации, ADAS и автономного вождения" },
-  { icon: "Rocket", label: "Космическая промышленность", desc: "Испытания датчиков ориентации для малых КА и ракет-носителей" },
+  { icon: "Navigation", label: "Инерциальные системы", desc: "Испытания и калибровка ИНС, БИНС, AHRS" },
+  { icon: "RotateCcw", label: "Гироскопы", desc: "Точная имитация угловых движений" },
+  { icon: "Cpu", label: "МЭМС-датчики", desc: "Верификация MEMS IMU и акселерометров" },
+  { icon: "Plane", label: "Авионика", desc: "Системы навигации БПЛА и авиатехники" },
+  { icon: "Car", label: "Автопром / ADAS", desc: "Калибровка систем автономного вождения" },
+  { icon: "Rocket", label: "Космос", desc: "Испытания датчиков ориентации КА" },
 ];
 
 const cases = [
   {
     num: "01",
-    client: "Разработчик БПЛА",
-    task: "Требовалась калибровка БИНС с погрешностью не более 0.002° при температурном диапазоне −40…+60 °C.",
-    solution: "Поставили трёхосевой стенд ОС-3000 с термокамерой и ПО автоматической калибровки.",
-    result: "Сокращение времени калибровки в 4 раза. Погрешность — 0.0015°. Серийное производство запущено через 3 месяца.",
+    tag: "Авиация",
+    task: "Калибровка БИНС с погрешностью не более 0.002° при −40…+60 °C.",
+    solution: "Трёхосевой стенд ОС-3000 с термокамерой и ПО автокалибровки.",
+    result: "Время калибровки сократилось в 4 раза. Погрешность — 0.0015°.",
   },
   {
     num: "02",
-    client: "Интегратор ADAS-систем",
-    task: "Тестирование 6-осевых IMU для системы автономного вождения в условиях тряски и вибрации до 20 g.",
-    solution: "Комплекс 6-DOF ОС-6200 с интеграцией в тестовый стенд заказчика через Ethernet / CAN.",
-    result: "Выявлено 12% дефектных партий до финальной сборки. Рекламации снижены на 87%.",
+    tag: "Автопром",
+    task: "Тестирование 6-осевых IMU для ADAS при вибрации до 20 g.",
+    solution: "Комплекс ОС-6500 с интеграцией в тестовый стенд через Ethernet.",
+    result: "Выявлено 12% дефектных партий до сборки. Рекламации −87%.",
   },
   {
     num: "03",
-    client: "КБ космической отрасли",
-    task: "Испытания звёздных датчиков и МЭМС-гироскопов в условиях, имитирующих орбитальное движение КА.",
-    solution: "Прецизионный стенд ОС-6500 с угловой скоростью до 0.0001 °/с и специальным алгоритмом профилей.",
-    result: "Успешная сертификация оборудования для трёх КА. Сопровождение — 5 лет.",
+    tag: "Космос",
+    task: "Испытания МЭМС-гироскопов в режиме имитации орбитального движения.",
+    solution: "Прецизионный ОС-6500 со скоростью до 0.0001 °/с и спецпрофилями.",
+    result: "Сертификация оборудования для трёх КА. Сопровождение 5 лет.",
   },
 ];
 
 const faqs = [
   {
     q: "Какая гарантия на стенды?",
-    a: "Стандартная гарантия — 24 месяца с даты ввода в эксплуатацию. По запросу оформляем расширенную гарантию на 36 или 60 месяцев с приоритетным сервисным обслуживанием и выездом инженера в течение 48 часов.",
+    a: "Стандартная гарантия — 24 месяца. По запросу — расширенная до 36 или 60 месяцев с приоритетным выездом инженера в течение 48 часов.",
   },
   {
     q: "Как оформить ТЗ на нестандартный стенд?",
-    a: "Свяжитесь с нашим инженером. Мы проводим бесплатную 1-часовую консультацию, после которой готовим предварительное ТЗ и КП. Разработка нестандартного изделия — от 8 недель в зависимости от DOF и требований точности.",
+    a: "Мы проводим бесплатную консультацию, по итогам которой готовим ТЗ и КП. Разработка нестандартного изделия — от 8 недель в зависимости от DOF и требований точности.",
   },
   {
     q: "Есть ли у вас сертификаты?",
-    a: "Да. Продукция сертифицирована по ГОСТ РВ 0015-002, имеет заключения об испытаниях по MIL-STD-810H. Все стенды проходят метрологическую аттестацию в аккредитованной лаборатории. Документация предоставляется в комплекте.",
+    a: "Да. Продукция сертифицирована по ГОСТ РВ 0015-002. Все стенды проходят метрологическую аттестацию. Документация предоставляется в комплекте поставки.",
   },
 ];
 
-function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+function OstecLogoFull({ className = "" }: { className?: string }) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-ostek-dark/95 backdrop-blur-sm border-b border-ostek-border">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-ostek-blue rounded flex items-center justify-center">
-            <span className="text-white font-bold text-sm font-mono">О</span>
-          </div>
-          <span className="text-ostek-white font-semibold text-lg tracking-tight">Остек</span>
-        </div>
-        <nav className="hidden md:flex items-center gap-8">
-          {["Продукты", "Кейсы", "Контакты"].map((item) => (
-            <a
-              key={item}
-              href={`#${item === "Продукты" ? "specs" : item === "Кейсы" ? "cases" : "footer"}`}
-              className="text-ostek-muted hover:text-ostek-white text-sm font-medium transition-colors duration-200"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
-        <div className="flex items-center gap-3">
-          <a
-            href="#footer"
-            className="hidden md:inline-flex items-center gap-2 bg-ostek-blue hover:bg-ostek-blue-dim text-white text-sm font-medium px-4 py-2 rounded transition-colors duration-200"
-          >
-            <Icon name="MessageSquare" size={15} />
-            Связаться с инженером
+    <svg className={className} viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="4" width="40" height="40" rx="3" fill="#0055A4" />
+      <text x="20" y="30" textAnchor="middle" fill="white" fontSize="20" fontWeight="800" fontFamily="Arial Black, Arial, sans-serif">О</text>
+      <text x="50" y="34" fill="#0055A4" fontSize="24" fontWeight="800" fontFamily="Arial Black, Arial, sans-serif" letterSpacing="2">СТЕК</text>
+      <text x="50" y="46" fill="#6C757D" fontSize="9" fontFamily="Arial, sans-serif" letterSpacing="0.5">ИСПЫТАТЕЛЬНОЕ ОБОРУДОВАНИЕ</text>
+    </svg>
+  );
+}
+
+// ─── Header ───────────────────────────────────────────────────────────────────
+function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  return (
+    <header className="sticky top-0 z-50 bg-white border-b border-[#DEE2E6] shadow-sm">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="h-16 flex items-center justify-between gap-8">
+          <a href="#" className="shrink-0">
+            <OstecLogo className="h-9 w-auto" />
           </a>
-          <button
-            className="md:hidden text-ostek-muted hover:text-ostek-white"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            <Icon name={mobileOpen ? "X" : "Menu"} size={22} />
+          <nav className="hidden md:flex items-center gap-7">
+            {[
+              { label: "Продукты", href: "#specs" },
+              { label: "Решения", href: "#applications" },
+              { label: "О компании", href: "#cases" },
+              { label: "Контакты", href: "#footer" },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="text-sm text-[#333333] hover:text-[#0055A4] transition-colors font-medium"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          <div className="hidden md:flex items-center gap-5">
+            <a href="tel:+74951234567" className="flex items-center gap-2 text-sm text-[#333333] font-medium hover:text-[#0055A4] transition-colors">
+              <Icon name="Phone" size={14} className="text-[#0055A4]" />
+              +7 (495) 123-45-67
+            </a>
+            <a href="#footer" className="bg-[#0055A4] hover:bg-[#004490] text-white text-sm font-semibold px-5 py-2 transition-colors">
+              Заказать
+            </a>
+          </div>
+          <button className="md:hidden text-[#6C757D]" onClick={() => setMenuOpen(!menuOpen)}>
+            <Icon name={menuOpen ? "X" : "Menu"} size={22} />
           </button>
         </div>
       </div>
-      {mobileOpen && (
-        <div className="md:hidden bg-ostek-surface border-b border-ostek-border px-6 py-4 flex flex-col gap-4">
-          {["Продукты", "Кейсы", "Контакты"].map((item) => (
-            <a
-              key={item}
-              href={`#${item === "Продукты" ? "specs" : item === "Кейсы" ? "cases" : "footer"}`}
-              className="text-ostek-text text-sm font-medium"
-              onClick={() => setMobileOpen(false)}
-            >
+      {menuOpen && (
+        <div className="md:hidden bg-white border-t border-[#DEE2E6] px-6 py-4 space-y-3">
+          {["Продукты", "Решения", "О компании", "Контакты"].map((item) => (
+            <a key={item} href="#" className="block text-sm text-[#333333] font-medium py-1" onClick={() => setMenuOpen(false)}>
               {item}
             </a>
           ))}
-          <a href="#footer" className="bg-ostek-blue text-white text-sm font-medium px-4 py-2 rounded text-center">
-            Связаться с инженером
+          <a href="#footer" className="block bg-[#0055A4] text-white text-sm font-semibold px-4 py-2.5 text-center mt-3" onClick={() => setMenuOpen(false)}>
+            Заказать
           </a>
         </div>
       )}
@@ -139,124 +156,127 @@ function Header() {
   );
 }
 
+// ─── Hero ──────────────────────────────────────────────────────────────────────
 function Hero() {
-  const [videoOpen, setVideoOpen] = useState(false);
   return (
-    <section className="relative min-h-screen flex items-center bg-ostek-dark pt-16 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: `url(${HERO_IMAGE})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-ostek-dark via-ostek-dark/80 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-ostek-dark via-transparent to-transparent" />
-      <div className="relative max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-center">
-        <div>
-          <div className="inline-flex items-center gap-2 bg-ostek-blue/10 border border-ostek-blue/30 text-ostek-blue-light text-xs font-mono px-3 py-1.5 rounded mb-8 opacity-0 animate-fade-up">
-            <span className="w-1.5 h-1.5 bg-ostek-blue-light rounded-full animate-pulse" />
-            Остек — решения для испытаний и тестирования
+    <section className="bg-[#F8F9FA] border-b border-[#DEE2E6]">
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-6">
+              <span className="w-6 h-px bg-[#0055A4]" />
+              Стенды имитации движения
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-[#111111] leading-tight mb-4">
+              Стенды имитации<br />движения
+            </h1>
+            <p className="text-xl text-[#6C757D] mb-3 font-medium">
+              Одноосевые поворотные столы для испытаний и калибровки
+            </p>
+            <p className="text-sm text-[#6C757D] leading-relaxed mb-8 max-w-md">
+              Высокоточное оборудование для тестирования инерциальных навигационных систем, гироскопов и МЭМС-датчиков. Соответствие MIL-STD-810H и ГОСТ РВ.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#specs"
+                className="inline-flex items-center gap-2 bg-[#0055A4] hover:bg-[#004490] text-white text-sm font-semibold px-6 py-3 transition-colors"
+              >
+                Подробнее
+                <Icon name="ArrowRight" size={16} />
+              </a>
+              <a
+                href="#footer"
+                className="inline-flex items-center gap-2 border border-[#DEE2E6] hover:border-[#0055A4] text-[#333333] hover:text-[#0055A4] text-sm font-medium px-6 py-3 transition-colors bg-white"
+              >
+                Запросить КП
+              </a>
+            </div>
+            <div className="flex gap-10 mt-10 pt-8 border-t border-[#DEE2E6]">
+              {[["15+", "лет опыта"], ["200+", "стендов в эксплуатации"], ["40+", "стран поставки"]].map(([n, l]) => (
+                <div key={l}>
+                  <div className="text-2xl font-bold text-[#0055A4]">{n}</div>
+                  <div className="text-xs text-[#6C757D] mt-0.5">{l}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-ostek-white leading-tight mb-6 opacity-0 animate-fade-up-delay">
-            Стенды имитации<br />
-            <span className="text-ostek-blue-light">движения 6+ DOF</span>
-          </h1>
-          <p className="text-ostek-muted text-lg leading-relaxed mb-10 max-w-lg opacity-0 animate-fade-up-delay2">
-            Высокоточное оборудование для тестирования инерциальных навигационных систем, гироскопов и MEMS-датчиков. Точность до ±0.001°, соответствие MIL-STD-810H.
-          </p>
-          <div className="flex flex-wrap gap-4 opacity-0 animate-fade-up-delay3">
-            <a
-              href="#footer"
-              className="inline-flex items-center gap-2 bg-ostek-blue hover:bg-ostek-blue-dim text-white font-semibold px-6 py-3 rounded transition-all duration-200 hover:shadow-lg hover:shadow-ostek-blue/25"
-            >
-              <Icon name="FileText" size={18} />
-              Запросить спецификацию
-            </a>
-            <button
-              onClick={() => setVideoOpen(true)}
-              className="inline-flex items-center gap-2 border border-ostek-border hover:border-ostek-muted text-ostek-text hover:text-ostek-white font-medium px-6 py-3 rounded transition-all duration-200"
-            >
-              <Icon name="Play" size={18} />
-              Смотреть видео работы
-            </button>
-          </div>
-          <div className="flex gap-8 mt-12 opacity-0 animate-fade-up-delay3">
-            {[["15+", "лет на рынке"], ["200+", "установленных стендов"], ["40+", "стран поставки"]].map(([num, label]) => (
-              <div key={label}>
-                <div className="text-2xl font-bold text-ostek-white font-mono">{num}</div>
-                <div className="text-xs text-ostek-muted mt-0.5">{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="hidden md:block relative">
-          <div className="relative rounded-lg overflow-hidden border border-ostek-border shadow-2xl">
-            <img src={HERO_IMAGE} alt="Стенд имитации движения" className="w-full h-80 object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ostek-dark/60 to-transparent" />
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-              <div className="bg-ostek-dark/80 backdrop-blur border border-ostek-border rounded px-3 py-2">
-                <div className="text-xs text-ostek-muted font-mono">МОДЕЛЬ</div>
-                <div className="text-sm text-ostek-white font-semibold">ОС-6500 / 6-DOF</div>
-              </div>
-              <div className="bg-ostek-blue/20 border border-ostek-blue/40 rounded px-3 py-2">
-                <div className="text-xs text-ostek-blue-light font-mono">ТОЧНОСТЬ</div>
-                <div className="text-sm text-white font-semibold">±0.001°</div>
-              </div>
+          <div className="relative">
+            <div className="border border-[#DEE2E6] bg-white overflow-hidden shadow-lg">
+              <img src={PRODUCT_IMAGE} alt="Поворотный стол Остек" className="w-full h-80 object-cover" />
+            </div>
+            <div className="absolute -bottom-4 -left-4 bg-[#0055A4] text-white px-5 py-3 shadow-lg">
+              <div className="text-xs font-medium opacity-80">Точность позиционирования</div>
+              <div className="text-xl font-bold">±0.001°</div>
             </div>
           </div>
         </div>
       </div>
-      {videoOpen && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6"
-          onClick={() => setVideoOpen(false)}
-        >
-          <div
-            className="bg-ostek-surface border border-ostek-border rounded-xl p-8 max-w-2xl w-full text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="w-16 h-16 bg-ostek-blue/20 border border-ostek-blue/40 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Icon name="Play" size={28} className="text-ostek-blue-light ml-1" />
-            </div>
-            <h3 className="text-ostek-white font-semibold text-xl mb-2">Видео-демонстрация стенда ОС-6500</h3>
-            <p className="text-ostek-muted text-sm mb-6">Свяжитесь с нами, чтобы получить ссылку на полную демонстрацию работы стенда или запросить онлайн-сессию с инженером.</p>
-            <div className="flex gap-3 justify-center">
-              <a href="#footer" className="bg-ostek-blue hover:bg-ostek-blue-dim text-white text-sm font-medium px-5 py-2.5 rounded transition-colors" onClick={() => setVideoOpen(false)}>
-                Запросить видео
-              </a>
-              <button onClick={() => setVideoOpen(false)} className="border border-ostek-border hover:border-ostek-muted text-ostek-muted hover:text-ostek-white text-sm font-medium px-5 py-2.5 rounded transition-colors">
-                Закрыть
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
 
+// ─── Product block ─────────────────────────────────────────────────────────────
+function ProductBlock() {
+  return (
+    <section className="bg-white py-20 border-b border-[#DEE2E6]">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-16 items-start">
+          <div>
+            <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-4">Флагманский продукт</div>
+            <h2 className="text-3xl font-bold text-[#111111] mb-4">
+              ОС-1000<br />
+              <span className="text-xl font-medium text-[#6C757D]">Одноосевой поворотный стол</span>
+            </h2>
+            <p className="text-[#333333] leading-relaxed mb-6 text-sm">
+              Компактный прецизионный стенд для калибровки одноосевых гироскопов, акселерометров и МЭМС-датчиков. Бесшумный прямой привод, закрытая обратная связь по энкодеру.
+            </p>
+            <a href="#footer" className="inline-flex items-center gap-2 text-[#0055A4] hover:text-[#004490] text-sm font-semibold transition-colors group">
+              Запросить спецификацию
+              <Icon name="ArrowRight" size={15} className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+          <div>
+            <div className="text-xs text-[#6C757D] font-medium uppercase tracking-widest mb-4">Ключевые характеристики</div>
+            {[
+              ["Грузоподъёмность", "до 5 кг"],
+              ["Погрешность позиционирования", "±0.001°"],
+              ["Скорость вращения", "до 400 °/с"],
+              ["Интерфейс управления", "USB / RS-422 / Ethernet"],
+              ["Диапазон углов", "±360° / неограничен"],
+              ["Рабочая температура", "−10…+50 °C"],
+            ].map(([name, value]) => (
+              <div key={name} className="flex items-center justify-between py-3.5 border-b border-[#DEE2E6] last:border-0">
+                <span className="text-sm text-[#6C757D]">{name}</span>
+                <span className="text-sm font-semibold text-[#111111] font-mono">{value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Advantages ───────────────────────────────────────────────────────────────
 function Advantages() {
   return (
-    <section className="bg-ostek-surface py-24 border-b border-ostek-border">
+    <section className="bg-[#F8F9FA] py-20 border-b border-[#DEE2E6]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-14">
-          <div className="text-ostek-blue text-xs font-mono uppercase tracking-widest mb-3">Преимущества</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-ostek-white">Почему наши стенды</h2>
+        <div className="text-center mb-12">
+          <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-3">Преимущества</div>
+          <h2 className="text-3xl font-bold text-[#111111]">Почему выбирают Остек</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {advantages.map((a) => (
             <div
               key={a.title}
-              className="group bg-ostek-card border border-ostek-border rounded-xl p-8 hover:border-ostek-blue/50 hover:shadow-xl hover:shadow-ostek-blue/5 transition-all duration-300 hover:-translate-y-1 cursor-default"
+              className="bg-white border border-[#DEE2E6] p-8 hover:border-[#0055A4] hover:shadow-md transition-all duration-200 cursor-default group"
             >
-              <div className="w-12 h-12 bg-ostek-blue/10 border border-ostek-blue/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-ostek-blue/20 group-hover:border-ostek-blue/40 transition-all duration-300">
-                <Icon name={a.icon} size={22} className="text-ostek-blue-light" />
+              <div className="w-10 h-10 bg-[#E8F0FA] flex items-center justify-center mb-5 group-hover:bg-[#0055A4] transition-colors duration-200">
+                <Icon name={a.icon} size={20} className="text-[#0055A4] group-hover:text-white transition-colors duration-200" />
               </div>
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="text-ostek-white font-semibold text-lg leading-snug pr-4">{a.title}</h3>
-                <span className="shrink-0 text-xs font-mono text-ostek-blue-light bg-ostek-blue/10 border border-ostek-blue/20 px-2 py-1 rounded">
-                  {a.tag}
-                </span>
-              </div>
-              <p className="text-ostek-muted text-sm leading-relaxed">{a.desc}</p>
+              <h3 className="text-[#111111] font-semibold mb-2">{a.title}</h3>
+              <p className="text-[#6C757D] text-sm leading-relaxed">{a.desc}</p>
             </div>
           ))}
         </div>
@@ -265,63 +285,71 @@ function Advantages() {
   );
 }
 
+// ─── Specs table ──────────────────────────────────────────────────────────────
 function Specs() {
   return (
-    <section id="specs" className="bg-ostek-dark py-24 border-b border-ostek-border">
+    <section id="specs" className="bg-white py-20 border-b border-[#DEE2E6]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-14">
-          <div className="text-ostek-blue text-xs font-mono uppercase tracking-widest mb-3">Технические данные</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-ostek-white">Технические характеристики</h2>
+        <div className="mb-10">
+          <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-3">Линейка продуктов</div>
+          <h2 className="text-3xl font-bold text-[#111111]">Технические характеристики</h2>
         </div>
-        <div className="overflow-x-auto rounded-xl border border-ostek-border">
+        <div className="overflow-x-auto border border-[#DEE2E6]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-ostek-surface border-b border-ostek-border">
-                <th className="text-left text-ostek-muted font-medium px-6 py-4 font-mono text-xs uppercase tracking-wider">Параметр</th>
-                <th className="text-center text-ostek-blue-light font-semibold px-6 py-4">ОС-1000 <span className="block text-ostek-muted font-normal text-xs font-mono">1-DOF</span></th>
-                <th className="text-center text-ostek-blue-light font-semibold px-6 py-4">ОС-3000 <span className="block text-ostek-muted font-normal text-xs font-mono">3-DOF</span></th>
-                <th className="text-center bg-ostek-blue/5 border-x border-ostek-blue/20 text-white font-semibold px-6 py-4">ОС-6500 <span className="block text-ostek-blue-light font-normal text-xs font-mono">6-DOF</span></th>
+              <tr className="bg-[#F8F9FA] border-b border-[#DEE2E6]">
+                <th className="text-left text-[#6C757D] font-medium px-6 py-4 text-xs uppercase tracking-wider">Параметр</th>
+                <th className="text-center text-[#111111] font-semibold px-6 py-4">
+                  ОС-1000<span className="block text-[#6C757D] font-normal text-xs font-sans">1-DOF</span>
+                </th>
+                <th className="text-center text-[#111111] font-semibold px-6 py-4">
+                  ОС-3000<span className="block text-[#6C757D] font-normal text-xs font-sans">3-DOF</span>
+                </th>
+                <th className="text-center bg-[#0055A4] text-white font-semibold px-6 py-4">
+                  ОС-6500<span className="block text-blue-200 font-normal text-xs font-sans">6-DOF</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {specs.map((row, i) => (
-                <tr key={row.param} className={`border-b border-ostek-border/60 hover:bg-ostek-surface/50 transition-colors ${i % 2 === 0 ? "" : "bg-ostek-surface/20"}`}>
-                  <td className="text-ostek-muted px-6 py-4 font-medium">{row.param}</td>
-                  {row.values.map((val, j) => (
-                    <td key={j} className={`text-center text-ostek-text px-6 py-4 font-mono text-sm ${j === 2 ? "bg-ostek-blue/5 border-x border-ostek-blue/10" : ""}`}>
-                      {val}
-                    </td>
-                  ))}
+                <tr key={row.param} className={`border-b border-[#DEE2E6] hover:bg-[#F8F9FA] transition-colors ${i % 2 === 0 ? "bg-white" : "bg-[#F8F9FA]/50"}`}>
+                  <td className="text-[#6C757D] px-6 py-4">{row.param}</td>
+                  <td className="text-center text-[#333333] px-6 py-4 font-mono">{row.os1000}</td>
+                  <td className="text-center text-[#333333] px-6 py-4 font-mono">{row.os3000}</td>
+                  <td className="text-center text-[#333333] px-6 py-4 font-mono bg-[#E8F0FA] border-x border-blue-100 font-semibold">{row.os6500}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="text-ostek-muted/60 text-xs mt-4 font-mono">* Параметры приведены для стандартной конфигурации. Нестандартные характеристики — по ТЗ заказчика.</p>
+        <p className="text-[#6C757D] text-xs mt-3">* Нестандартные параметры — по ТЗ заказчика.</p>
       </div>
     </section>
   );
 }
 
+// ─── Applications ─────────────────────────────────────────────────────────────
 function Applications() {
   return (
-    <section className="bg-ostek-surface py-24 border-b border-ostek-border">
+    <section id="applications" className="bg-[#F8F9FA] py-20 border-b border-[#DEE2E6]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-14">
-          <div className="text-ostek-blue text-xs font-mono uppercase tracking-widest mb-3">Отрасли</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-ostek-white">Сферы применения</h2>
+        <div className="mb-12">
+          <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-3">Применение</div>
+          <h2 className="text-3xl font-bold text-[#111111]">Сферы применения</h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {applications.map((app) => (
             <div
               key={app.label}
-              className="group bg-ostek-card border border-ostek-border rounded-xl p-7 hover:border-ostek-blue/40 hover:bg-ostek-card/80 transition-all duration-300 cursor-default"
+              className="bg-white border border-[#DEE2E6] p-6 flex gap-4 items-start hover:border-[#0055A4] hover:shadow-sm transition-all duration-200 group cursor-default"
             >
-              <div className="w-11 h-11 bg-ostek-dark border border-ostek-border rounded-lg flex items-center justify-center mb-5 group-hover:border-ostek-blue/40 group-hover:bg-ostek-blue/10 transition-all duration-300">
-                <Icon name={app.icon} size={20} className="text-ostek-muted group-hover:text-ostek-blue-light transition-colors duration-300" />
+              <div className="shrink-0 w-9 h-9 bg-[#E8F0FA] flex items-center justify-center group-hover:bg-[#0055A4] transition-colors duration-200">
+                <Icon name={app.icon} size={18} className="text-[#0055A4] group-hover:text-white transition-colors duration-200" />
               </div>
-              <h3 className="text-ostek-white font-semibold mb-2">{app.label}</h3>
-              <p className="text-ostek-muted text-sm leading-relaxed">{app.desc}</p>
+              <div>
+                <h3 className="text-[#111111] font-semibold text-sm mb-1">{app.label}</h3>
+                <p className="text-[#6C757D] text-xs leading-relaxed">{app.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -330,38 +358,36 @@ function Applications() {
   );
 }
 
+// ─── Cases ────────────────────────────────────────────────────────────────────
 function Cases() {
   return (
-    <section id="cases" className="bg-ostek-dark py-24 border-b border-ostek-border">
+    <section id="cases" className="bg-white py-20 border-b border-[#DEE2E6]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-14">
-          <div className="text-ostek-blue text-xs font-mono uppercase tracking-widest mb-3">Реализованные проекты</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-ostek-white">Почему доверяют нам</h2>
+        <div className="mb-12">
+          <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-3">Опыт</div>
+          <h2 className="text-3xl font-bold text-[#111111]">Реализованные проекты</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {cases.map((c) => (
-            <div
-              key={c.num}
-              className="group bg-ostek-card border border-ostek-border rounded-xl p-8 hover:border-ostek-blue/40 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-4xl font-bold font-mono text-ostek-blue/20 group-hover:text-ostek-blue/40 transition-colors duration-300">{c.num}</span>
-                <span className="text-xs text-ostek-muted bg-ostek-dark border border-ostek-border px-3 py-1 rounded font-mono">{c.client}</span>
+            <div key={c.num} className="border border-[#DEE2E6] hover:border-[#0055A4] hover:shadow-md transition-all duration-200 cursor-default">
+              <div className="bg-[#0055A4] px-6 py-4 flex items-center justify-between">
+                <span className="text-white font-bold text-lg font-mono">{c.num}</span>
+                <span className="text-blue-200 text-xs font-medium uppercase tracking-wider">{c.tag}</span>
               </div>
-              <div className="space-y-4">
+              <div className="p-6 space-y-4">
                 <div>
-                  <div className="text-xs font-mono text-ostek-blue-light uppercase tracking-wider mb-1.5">Задача</div>
-                  <p className="text-ostek-muted text-sm leading-relaxed">{c.task}</p>
+                  <div className="text-xs text-[#6C757D] font-medium uppercase tracking-wider mb-1.5">Задача</div>
+                  <p className="text-[#333333] text-sm leading-relaxed">{c.task}</p>
                 </div>
-                <div className="h-px bg-ostek-border" />
+                <div className="h-px bg-[#DEE2E6]" />
                 <div>
-                  <div className="text-xs font-mono text-ostek-blue-light uppercase tracking-wider mb-1.5">Решение</div>
-                  <p className="text-ostek-muted text-sm leading-relaxed">{c.solution}</p>
+                  <div className="text-xs text-[#6C757D] font-medium uppercase tracking-wider mb-1.5">Решение</div>
+                  <p className="text-[#333333] text-sm leading-relaxed">{c.solution}</p>
                 </div>
-                <div className="h-px bg-ostek-border" />
+                <div className="h-px bg-[#DEE2E6]" />
                 <div>
-                  <div className="text-xs font-mono text-green-400 uppercase tracking-wider mb-1.5">Результат</div>
-                  <p className="text-ostek-text text-sm leading-relaxed font-medium">{c.result}</p>
+                  <div className="text-xs text-[#0055A4] font-medium uppercase tracking-wider mb-1.5">Результат</div>
+                  <p className="text-[#111111] text-sm font-semibold leading-relaxed">{c.result}</p>
                 </div>
               </div>
             </div>
@@ -372,35 +398,53 @@ function Cases() {
   );
 }
 
+// ─── Video ────────────────────────────────────────────────────────────────────
 function VideoSection() {
   const [open, setOpen] = useState(false);
   return (
-    <section className="bg-ostek-surface py-24 border-b border-ostek-border">
+    <section className="bg-[#F8F9FA] py-20 border-b border-[#DEE2E6]">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="relative rounded-2xl overflow-hidden border border-ostek-border bg-ostek-dark group cursor-pointer" onClick={() => setOpen(true)}>
-          <img src={HERO_IMAGE} alt="Демонстрация работы стенда" className="w-full h-64 md:h-96 object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-300" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="w-20 h-20 bg-ostek-blue/30 hover:bg-ostek-blue/50 border-2 border-ostek-blue-light/60 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl group-hover:shadow-ostek-blue/30">
-              <Icon name="Play" size={32} className="text-white ml-2" />
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-3">Демонстрация</div>
+            <h2 className="text-3xl font-bold text-[#111111] mb-4">Стенд в действии</h2>
+            <p className="text-[#6C757D] text-sm leading-relaxed mb-6">
+              Посмотрите, как стенд ОС-6500 выполняет полный цикл калибровки БИНС за 12 минут. Видео доступно по запросу или на очной демонстрации в нашем демозале в Москве.
+            </p>
+            <button
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center gap-2 border border-[#0055A4] text-[#0055A4] hover:bg-[#0055A4] hover:text-white text-sm font-medium px-5 py-2.5 transition-colors"
+            >
+              <Icon name="Play" size={15} />
+              Смотреть видео
+            </button>
+          </div>
+          <div
+            className="relative border border-[#DEE2E6] bg-white cursor-pointer group overflow-hidden shadow"
+            onClick={() => setOpen(true)}
+          >
+            <img src={PRODUCT_IMAGE} alt="Видео-демонстрация" className="w-full h-64 object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 bg-[#0055A4] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+                <Icon name="Play" size={26} className="ml-1" />
+              </div>
             </div>
-            <h3 className="text-ostek-white font-bold text-2xl mb-2">Видео-демонстрация</h3>
-            <p className="text-ostek-muted text-sm">Стенд ОС-6500 в работе: калибровка гироскопа за 12 минут</p>
           </div>
         </div>
       </div>
       {open && (
-        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6" onClick={() => setOpen(false)}>
-          <div className="bg-ostek-surface border border-ostek-border rounded-xl p-8 max-w-lg w-full text-center" onClick={(e) => e.stopPropagation()}>
-            <div className="w-16 h-16 bg-ostek-blue/20 border border-ostek-blue/40 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Icon name="Play" size={28} className="text-ostek-blue-light ml-1" />
+        <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-6" onClick={() => setOpen(false)}>
+          <div className="bg-white border border-[#DEE2E6] p-8 max-w-lg w-full text-center shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="w-12 h-12 bg-[#E8F0FA] flex items-center justify-center mx-auto mb-4">
+              <Icon name="Play" size={22} className="text-[#0055A4] ml-0.5" />
             </div>
-            <h3 className="text-ostek-white font-semibold text-xl mb-2">Видео-демонстрация</h3>
-            <p className="text-ostek-muted text-sm mb-6">Оставьте заявку — мы отправим ссылку на полную демонстрацию или организуем онлайн-сессию с инженером.</p>
+            <h3 className="text-[#111111] font-bold text-lg mb-2">Видео-демонстрация</h3>
+            <p className="text-[#6C757D] text-sm mb-6">Оставьте заявку — пришлём ссылку или пригласим на демонстрацию в нашем демозале.</p>
             <div className="flex gap-3 justify-center">
-              <a href="#footer" className="bg-ostek-blue hover:bg-ostek-blue-dim text-white text-sm font-medium px-5 py-2.5 rounded transition-colors" onClick={() => setOpen(false)}>
-                Запросить видео
+              <a href="#footer" className="bg-[#0055A4] hover:bg-[#004490] text-white text-sm font-semibold px-5 py-2.5 transition-colors" onClick={() => setOpen(false)}>
+                Оставить заявку
               </a>
-              <button onClick={() => setOpen(false)} className="border border-ostek-border hover:border-ostek-muted text-ostek-muted hover:text-ostek-white text-sm font-medium px-5 py-2.5 rounded transition-colors">
+              <button onClick={() => setOpen(false)} className="border border-[#DEE2E6] text-[#6C757D] hover:text-[#333333] text-sm font-medium px-5 py-2.5 transition-colors">
                 Закрыть
               </button>
             </div>
@@ -411,35 +455,33 @@ function VideoSection() {
   );
 }
 
+// ─── FAQ ──────────────────────────────────────────────────────────────────────
 function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <section className="bg-ostek-dark py-24 border-b border-ostek-border">
+    <section className="bg-white py-20 border-b border-[#DEE2E6]">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="mb-14 text-center">
-          <div className="text-ostek-blue text-xs font-mono uppercase tracking-widest mb-3">FAQ</div>
-          <h2 className="text-3xl md:text-4xl font-bold text-ostek-white">Часто задаваемые вопросы</h2>
+        <div className="text-center mb-12">
+          <div className="text-xs text-[#0055A4] font-medium uppercase tracking-widest mb-3">Вопросы и ответы</div>
+          <h2 className="text-3xl font-bold text-[#111111]">Часто задаваемые вопросы</h2>
         </div>
-        <div className="space-y-3">
+        <div className="divide-y divide-[#DEE2E6] border border-[#DEE2E6]">
           {faqs.map((f, i) => (
-            <div
-              key={i}
-              className={`border rounded-xl overflow-hidden transition-all duration-300 ${open === i ? "border-ostek-blue/40 bg-ostek-card" : "border-ostek-border bg-ostek-surface hover:border-ostek-border/80"}`}
-            >
+            <div key={i}>
               <button
-                className="w-full flex items-center justify-between px-6 py-5 text-left group"
+                className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-[#F8F9FA] transition-colors group"
                 onClick={() => setOpen(open === i ? null : i)}
               >
-                <span className={`font-medium text-sm leading-snug transition-colors duration-200 ${open === i ? "text-ostek-white" : "text-ostek-text group-hover:text-ostek-white"}`}>
+                <span className={`font-medium text-sm leading-snug transition-colors ${open === i ? "text-[#0055A4]" : "text-[#111111] group-hover:text-[#0055A4]"}`}>
                   {f.q}
                 </span>
-                <span className={`ml-4 shrink-0 w-7 h-7 flex items-center justify-center rounded border transition-all duration-300 ${open === i ? "border-ostek-blue/40 bg-ostek-blue/20 rotate-45" : "border-ostek-border bg-ostek-dark"}`}>
-                  <Icon name="Plus" size={14} className={open === i ? "text-ostek-blue-light" : "text-ostek-muted"} />
+                <span className={`ml-4 shrink-0 transition-transform duration-200 ${open === i ? "rotate-180" : ""}`}>
+                  <Icon name="ChevronDown" size={18} className={open === i ? "text-[#0055A4]" : "text-[#6C757D]"} />
                 </span>
               </button>
               {open === i && (
-                <div className="px-6 pb-6">
-                  <p className="text-ostek-muted text-sm leading-relaxed">{f.a}</p>
+                <div className="px-6 pb-5 bg-[#F8F9FA] border-t border-[#DEE2E6]">
+                  <p className="text-[#333333] text-sm leading-relaxed pt-4">{f.a}</p>
                 </div>
               )}
             </div>
@@ -450,119 +492,117 @@ function FAQ() {
   );
 }
 
+// ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
-  const [formData, setFormData] = useState({ name: "", company: "", phone: "", message: "" });
+  const [form, setForm] = useState({ name: "", company: "", phone: "", comment: "" });
   const [sent, setSent] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-  };
+
   return (
-    <footer id="footer" className="bg-ostek-surface border-t border-ostek-border">
-      <div className="max-w-7xl mx-auto px-6 py-20">
+    <footer id="footer" className="bg-[#F8F9FA] border-t border-[#DEE2E6]">
+      <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 gap-16">
           <div>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-9 h-9 bg-ostek-blue rounded flex items-center justify-center">
-                <span className="text-white font-bold font-mono">О</span>
-              </div>
-              <span className="text-ostek-white font-semibold text-xl">Остек</span>
-            </div>
-            <p className="text-ostek-muted text-sm leading-relaxed mb-8 max-w-sm">
-              Производство высокоточных стендов имитации движения для испытательных лабораторий, ОКБ и серийных производств.
+            <OstecLogo className="h-9 w-auto mb-6" />
+            <p className="text-[#6C757D] text-sm leading-relaxed mb-8 max-w-xs">
+              Разработка и поставка испытательного оборудования для навигационных и инерциальных систем.
             </p>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Icon name="MapPin" size={16} className="text-ostek-blue-light mt-0.5 shrink-0" />
-                <span className="text-ostek-muted text-sm">125009, Москва, ул. Тверская, д. 16, стр. 1</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Icon name="Phone" size={16} className="text-ostek-blue-light shrink-0" />
-                <a href="tel:+74951234567" className="text-ostek-text text-sm hover:text-ostek-white transition-colors">+7 (495) 123-45-67</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Icon name="Mail" size={16} className="text-ostek-blue-light shrink-0" />
-                <a href="mailto:info@ostek.ru" className="text-ostek-text text-sm hover:text-ostek-white transition-colors">info@ostek.ru</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Icon name="Clock" size={16} className="text-ostek-blue-light shrink-0" />
-                <span className="text-ostek-muted text-sm">Пн–Пт, 9:00–18:00 МСК</span>
+            <div className="space-y-3.5">
+              {[
+                { icon: "MapPin", text: "125009, Москва, ул. Тверская, д. 16" },
+                { icon: "Phone", text: "+7 (495) 123-45-67", href: "tel:+74951234567" },
+                { icon: "Mail", text: "info@ostek.ru", href: "mailto:info@ostek.ru" },
+                { icon: "Clock", text: "Пн–Пт, 9:00–18:00 МСК" },
+              ].map((item) => (
+                <div key={item.text} className="flex items-start gap-3">
+                  <Icon name={item.icon} size={15} className="text-[#0055A4] mt-0.5 shrink-0" />
+                  {item.href ? (
+                    <a href={item.href} className="text-[#333333] text-sm hover:text-[#0055A4] transition-colors">{item.text}</a>
+                  ) : (
+                    <span className="text-[#6C757D] text-sm">{item.text}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 pt-8 border-t border-[#DEE2E6]">
+              <div className="text-xs text-[#6C757D] font-medium uppercase tracking-wider mb-3">Быстрые ссылки</div>
+              <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+                {["Продукты", "Решения", "Сертификаты", "Демозал", "О компании", "Контакты"].map((link) => (
+                  <a key={link} href="#" className="text-sm text-[#6C757D] hover:text-[#0055A4] transition-colors">{link}</a>
+                ))}
               </div>
             </div>
           </div>
+
           <div>
-            <h3 className="text-ostek-white font-semibold text-lg mb-6">Оставить заявку на расчёт</h3>
+            <h3 className="text-[#111111] font-bold text-lg mb-1">Оставить заявку на расчёт</h3>
+            <p className="text-[#6C757D] text-sm mb-6">Инженер свяжется с вами в течение 2 рабочих часов</p>
             {sent ? (
-              <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-8 text-center">
-                <div className="w-12 h-12 bg-green-500/20 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name="Check" size={22} className="text-green-400" />
+              <div className="border border-green-200 bg-green-50 p-8 text-center">
+                <div className="w-10 h-10 bg-green-100 flex items-center justify-center mx-auto mb-3">
+                  <Icon name="Check" size={20} className="text-green-600" />
                 </div>
-                <p className="text-ostek-white font-semibold mb-1">Заявка отправлена!</p>
-                <p className="text-ostek-muted text-sm">Наш инженер свяжется с вами в течение 2 рабочих часов.</p>
+                <p className="text-[#111111] font-semibold mb-1">Заявка принята</p>
+                <p className="text-[#6C757D] text-sm">Наш инженер свяжется с вами в ближайшее время.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-ostek-muted text-xs font-mono uppercase tracking-wider mb-1.5 block">Ваше имя</label>
+                    <label className="block text-xs text-[#6C757D] font-medium mb-1.5">Ваше имя *</label>
                     <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-ostek-dark border border-ostek-border rounded-lg px-4 py-3 text-ostek-text text-sm placeholder:text-ostek-muted/40 focus:outline-none focus:border-ostek-blue/60 transition-colors"
+                      type="text" required value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full border border-[#DEE2E6] bg-white px-3 py-2.5 text-sm text-[#333333] placeholder:text-[#6C757D]/50 focus:outline-none focus:border-[#0055A4] transition-colors"
                       placeholder="Иван Петров"
                     />
                   </div>
                   <div>
-                    <label className="text-ostek-muted text-xs font-mono uppercase tracking-wider mb-1.5 block">Компания</label>
+                    <label className="block text-xs text-[#6C757D] font-medium mb-1.5">Компания</label>
                     <input
-                      type="text"
-                      value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full bg-ostek-dark border border-ostek-border rounded-lg px-4 py-3 text-ostek-text text-sm placeholder:text-ostek-muted/40 focus:outline-none focus:border-ostek-blue/60 transition-colors"
-                      placeholder="ООО «Ваша компания»"
+                      type="text" value={form.company}
+                      onChange={(e) => setForm({ ...form, company: e.target.value })}
+                      className="w-full border border-[#DEE2E6] bg-white px-3 py-2.5 text-sm text-[#333333] placeholder:text-[#6C757D]/50 focus:outline-none focus:border-[#0055A4] transition-colors"
+                      placeholder="ООО «Компания»"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="text-ostek-muted text-xs font-mono uppercase tracking-wider mb-1.5 block">Телефон</label>
+                  <label className="block text-xs text-[#6C757D] font-medium mb-1.5">Телефон *</label>
                   <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full bg-ostek-dark border border-ostek-border rounded-lg px-4 py-3 text-ostek-text text-sm placeholder:text-ostek-muted/40 focus:outline-none focus:border-ostek-blue/60 transition-colors"
+                    type="tel" required value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    className="w-full border border-[#DEE2E6] bg-white px-3 py-2.5 text-sm text-[#333333] placeholder:text-[#6C757D]/50 focus:outline-none focus:border-[#0055A4] transition-colors"
                     placeholder="+7 (___) ___-__-__"
                   />
                 </div>
                 <div>
-                  <label className="text-ostek-muted text-xs font-mono uppercase tracking-wider mb-1.5 block">Комментарий / ТЗ</label>
+                  <label className="block text-xs text-[#6C757D] font-medium mb-1.5">Требования / комментарий</label>
                   <textarea
-                    rows={3}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-ostek-dark border border-ostek-border rounded-lg px-4 py-3 text-ostek-text text-sm placeholder:text-ostek-muted/40 focus:outline-none focus:border-ostek-blue/60 transition-colors resize-none"
-                    placeholder="Опишите требования: кол-во осей, нагрузка, диапазон углов..."
+                    rows={3} value={form.comment}
+                    onChange={(e) => setForm({ ...form, comment: e.target.value })}
+                    className="w-full border border-[#DEE2E6] bg-white px-3 py-2.5 text-sm text-[#333333] placeholder:text-[#6C757D]/50 focus:outline-none focus:border-[#0055A4] transition-colors resize-none"
+                    placeholder="DOF, грузоподъёмность, диапазон углов..."
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-ostek-blue hover:bg-ostek-blue-dim text-white font-semibold py-3.5 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-ostek-blue/25 flex items-center justify-center gap-2"
+                  className="w-full bg-[#0055A4] hover:bg-[#004490] text-white font-semibold py-3 text-sm transition-colors flex items-center justify-center gap-2"
                 >
-                  <Icon name="Send" size={16} />
+                  <Icon name="Send" size={15} />
                   Отправить заявку
                 </button>
-                <p className="text-ostek-muted/50 text-xs text-center">Ответ в течение 2 рабочих часов · Бесплатная консультация инженера</p>
+                <p className="text-[#6C757D]/60 text-xs text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
               </form>
             )}
           </div>
         </div>
-        <div className="border-t border-ostek-border mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-ostek-muted/50 text-xs">© 2024 Остек. Все права защищены.</p>
-          <div className="flex gap-6">
+      </div>
+      <div className="border-t border-[#DEE2E6] bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
+          <p className="text-[#6C757D] text-xs">© 2024 ГК Остек. Все права защищены.</p>
+          <div className="flex gap-5">
             {["Политика конфиденциальности", "Реквизиты"].map((link) => (
-              <a key={link} href="#" className="text-ostek-muted/50 hover:text-ostek-muted text-xs transition-colors">{link}</a>
+              <a key={link} href="#" className="text-[#6C757D] hover:text-[#333333] text-xs transition-colors">{link}</a>
             ))}
           </div>
         </div>
@@ -571,11 +611,13 @@ function Footer() {
   );
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
 const Index = () => {
   return (
-    <div className="font-sans bg-ostek-dark min-h-screen">
+    <div className="font-sans bg-white text-[#333333]">
       <Header />
       <Hero />
+      <ProductBlock />
       <Advantages />
       <Specs />
       <Applications />

@@ -68,16 +68,17 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				ostek: {
-					dark: '#0d1117',
-					surface: '#161b22',
-					card: '#1c2230',
-					border: '#2a3040',
-					blue: '#2563eb',
-					'blue-light': '#3b82f6',
-					'blue-dim': '#1d4ed8',
-					muted: '#8b9ab0',
-					text: '#e2e8f0',
-					white: '#f8fafc',
+					bg: '#FFFFFF',
+					'bg-gray': '#F8F9FA',
+					'bg-card': '#F1F3F5',
+					text: '#333333',
+					heading: '#111111',
+					border: '#DEE2E6',
+					blue: '#0055A4',
+					'blue-hover': '#004490',
+					'blue-light': '#E8F0FA',
+					muted: '#6C757D',
+					white: '#FFFFFF',
 				}
 			},
 			borderRadius: {
