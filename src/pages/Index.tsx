@@ -3,11 +3,16 @@ import Icon from "@/components/ui/icon";
 
 const PRODUCT_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/files/8a67a025-66f9-4318-adb8-44d97b0be725.jpg";
 const STYLE_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9a8169e7-ece4-4278-bd68-1fe71872b56b.png";
-const LOGO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/60cecc92-0e1d-4cbc-b1d9-1fa1ca471bb1.jpg";
+const LOGO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9b36bded-2f56-4896-bbcd-f789d81b7b48.jpg";
 
-function OstecLogo({ className = "" }: { className?: string }) {
+function OstecLogo({ invert = false, className = "" }: { invert?: boolean; className?: string }) {
   return (
-    <img src={LOGO_IMAGE} alt="Остек" className={className} style={{ objectFit: "contain" }} />
+    <img
+      src={LOGO_IMAGE}
+      alt="Остек"
+      className={className}
+      style={{ objectFit: "contain", filter: invert ? "brightness(0) invert(1)" : "none" }}
+    />
   );
 }
 
@@ -72,7 +77,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="h-16 flex items-center justify-between gap-8">
           <a href="#">
-            <OstecLogo className="h-9 w-auto" />
+            <OstecLogo invert className="h-9 w-auto" />
           </a>
           <nav className="hidden md:flex items-center gap-7">
             {[{ label: "Продукты", href: "#specs" }, { label: "Решения", href: "#applications" }, { label: "О компании", href: "#cases" }, { label: "Контакты", href: "#footer" }].map((item) => (
@@ -456,7 +461,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 gap-16">
           <div>
-            <OstecLogo className="h-10 w-auto mb-6" />
+            <OstecLogo invert className="h-10 w-auto mb-6" />
             <p className="text-sm leading-relaxed mb-8 max-w-xs" style={{ color: "rgba(232,244,247,0.55)" }}>
               Разработка и поставка испытательного оборудования для навигационных и инерциальных систем.
             </p>
