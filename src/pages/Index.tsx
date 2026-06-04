@@ -3,23 +3,11 @@ import Icon from "@/components/ui/icon";
 
 const PRODUCT_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/files/8a67a025-66f9-4318-adb8-44d97b0be725.jpg";
 const STYLE_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9a8169e7-ece4-4278-bd68-1fe71872b56b.png";
+const LOGO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/60cecc92-0e1d-4cbc-b1d9-1fa1ca471bb1.jpg";
 
-// Цветовая палитра — тёмный бирюзово-стальной стиль по изображению
-// Основной: #1C3F4E  Акцент: #2A7A8C  Светлый: #E8F4F7  Текст: #F0F8FA
-
-function OstecLogo({ light = false, className = "" }: { light?: boolean; className?: string }) {
-  const blue = light ? "#FFFFFF" : "#1C3F4E";
-  const text = light ? "#FFFFFF" : "#1C3F4E";
+function OstecLogo({ className = "" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 180 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Квадрат с буквой О */}
-      <rect x="0" y="4" width="36" height="36" rx="3" fill={blue} />
-      <text x="18" y="28" textAnchor="middle" fill={light ? "#1C3F4E" : "white"} fontSize="18" fontWeight="800" fontFamily="Arial Black, Arial, sans-serif">О</text>
-      {/* СТЕК */}
-      <text x="46" y="30" fill={text} fontSize="22" fontWeight="800" fontFamily="Arial Black, Arial, sans-serif" letterSpacing="2">СТЕК</text>
-      {/* подпись */}
-      <text x="46" y="42" fill={light ? "rgba(255,255,255,0.6)" : "#5A7A8A"} fontSize="8.5" fontFamily="Arial, sans-serif" letterSpacing="0.8">ИСПЫТАТЕЛЬНОЕ ОБОРУДОВАНИЕ</text>
-    </svg>
+    <img src={LOGO_IMAGE} alt="Остек" className={className} style={{ objectFit: "contain" }} />
   );
 }
 
@@ -81,7 +69,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="h-16 flex items-center justify-between gap-8">
           <a href="#">
-            <OstecLogo light className="h-9 w-auto" />
+            <OstecLogo className="h-9 w-auto" />
           </a>
           <nav className="hidden md:flex items-center gap-7">
             {[{ label: "Продукты", href: "#specs" }, { label: "Решения", href: "#applications" }, { label: "О компании", href: "#cases" }, { label: "Контакты", href: "#footer" }].map((item) => (
@@ -472,7 +460,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 gap-16">
           <div>
-            <OstecLogo light className="h-10 w-auto mb-6" />
+            <OstecLogo className="h-10 w-auto mb-6" />
             <p className="text-sm leading-relaxed mb-8 max-w-xs" style={{ color: "rgba(232,244,247,0.55)" }}>
               Разработка и поставка испытательного оборудования для навигационных и инерциальных систем.
             </p>
