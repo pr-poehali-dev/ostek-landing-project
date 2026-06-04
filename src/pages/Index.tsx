@@ -6,16 +6,22 @@ const STYLE_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-35
 const LOGO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9b36bded-2f56-4896-bbcd-f789d81b7b48.jpg";
 
 function OstecLogo({ invert = false, className = "" }: { invert?: boolean; className?: string }) {
+  const color = invert ? "#FFFFFF" : "#111111";
+  const sub = invert ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)";
   return (
-    <img
-      src={LOGO_IMAGE}
-      alt="Остек"
-      className={className}
-      style={{
-        objectFit: "contain",
-        filter: invert ? "brightness(0) invert(1)" : "brightness(0)",
-      }}
-    />
+    <svg className={className} viewBox="0 0 160 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Эллипс-орбита */}
+      <ellipse cx="28" cy="26" rx="22" ry="9" stroke={color} strokeWidth="2" fill="none"/>
+      {/* Вертикальная линия */}
+      <line x1="28" y1="10" x2="28" y2="42" stroke={color} strokeWidth="2"/>
+      {/* Росток (листья) */}
+      <path d="M28 16 C22 10 16 12 18 18 C20 22 26 20 28 16Z" fill={color}/>
+      <path d="M28 16 C34 10 40 12 38 18 C36 22 30 20 28 16Z" fill={color}/>
+      {/* Текст ostec */}
+      <text x="56" y="28" fill={color} fontSize="18" fontWeight="800" fontFamily="Montserrat, Arial, sans-serif" letterSpacing="0.5">ostec</text>
+      {/* Подпись */}
+      <text x="56" y="42" fill={sub} fontSize="8" fontFamily="Montserrat, Arial, sans-serif" letterSpacing="1.5" fontWeight="400">группа компаний</text>
+    </svg>
   );
 }
 
