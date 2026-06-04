@@ -47,26 +47,28 @@ const faqs = [
   { q: "Есть ли у вас сертификаты?", a: "Да. Продукция сертифицирована по ГОСТ РВ 0015-002. Все стенды проходят метрологическую аттестацию. Документация предоставляется в комплекте поставки." },
 ];
 
-// ─── Palette ──────────────────────────────────────────────────────────────────
+// ─── Palette (ostec-materials.ru style) ──────────────────────────────────────
 const C = {
-  dark:    "#1A1A1A",   // хедер, заголовки
-  mid:     "#2C2C2C",   // тёмный фон для мобильного меню
-  accent:  "#5C6B3A",   // болотный/оливковый — кнопки, иконки, акценты
-  accentH: "#4A5630",   // hover болотного
-  accentBg:"#EFF2E8",   // очень светлый оливковый фон для плашек
-  light:   "#F8F8F6",   // основной светлый фон секций
+  header:  "#0B1C2C",   // тёмно-синий хедер
+  headerH: "#112437",   // чуть светлее для hover
+  btn:     "#1A2A3A",   // кнопка "Узнать стоимость"
+  btnH:    "#243548",   // hover кнопки
+  accent:  "#1A2A3A",   // акцентный синий
+  accentBg:"#EDF2F7",   // светло-голубой фон карточек со статами
+  light:   "#F7F8FA",   // основной фон секций
   white:   "#FFFFFF",
-  text:    "#222222",   // основной текст
-  muted:   "#6B7280",   // вторичный текст
-  border:  "#E2E4DC",   // граница на светлом
-  borderD: "#3A3A3A",   // граница на тёмном фоне
+  text:    "#1A202C",   // основной текст
+  muted:   "#718096",   // вторичный текст
+  border:  "#E2E8F0",   // граница
+  borderD: "#1E3347",   // граница на тёмном
+  outline: "#2C3E50",   // кнопка с обводкой
 };
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 shadow-sm" style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
+    <header className="sticky top-0 z-50 shadow-md" style={{ background: C.header, borderBottom: `1px solid ${C.borderD}` }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="h-16 flex items-center justify-between gap-8">
           <a href="#">
@@ -74,33 +76,33 @@ function Header() {
           </a>
           <nav className="hidden md:flex items-center gap-7">
             {[{ label: "Продукты", href: "#specs" }, { label: "Решения", href: "#applications" }, { label: "О компании", href: "#cases" }, { label: "Контакты", href: "#footer" }].map((item) => (
-              <a key={item.label} href={item.href} className="text-sm font-medium transition-colors" style={{ color: C.muted }}
-                onMouseEnter={e => (e.currentTarget.style.color = C.accent)}
-                onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
+              <a key={item.label} href={item.href} className="text-sm font-medium transition-colors" style={{ color: "rgba(255,255,255,0.72)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#FFFFFF")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.72)")}
               >{item.label}</a>
             ))}
           </nav>
           <div className="hidden md:flex items-center gap-5">
-            <a href="tel:+74957884444" className="flex items-center gap-2 text-sm font-medium transition-colors" style={{ color: C.text }}>
-              <Icon name="Phone" size={14} style={{ color: C.accent }} />
+            <a href="tel:+74957884444" className="flex items-center gap-2 text-sm font-medium" style={{ color: "rgba(255,255,255,0.85)" }}>
+              <Icon name="Phone" size={14} style={{ color: "rgba(255,255,255,0.6)" }} />
               +7 (495) 788-44-44
             </a>
-            <a href="#footer" className="text-sm font-semibold px-5 py-2 transition-colors" style={{ background: C.accent, color: C.white }}
-              onMouseEnter={e => (e.currentTarget.style.background = C.accentH)}
-              onMouseLeave={e => (e.currentTarget.style.background = C.accent)}
+            <a href="#footer" className="text-sm font-semibold px-5 py-2 transition-colors" style={{ background: C.btn, color: C.white, border: `1px solid rgba(255,255,255,0.15)` }}
+              onMouseEnter={e => (e.currentTarget.style.background = C.btnH)}
+              onMouseLeave={e => (e.currentTarget.style.background = C.btn)}
             >Заказать</a>
           </div>
-          <button className="md:hidden" style={{ color: C.muted }} onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="md:hidden" style={{ color: "rgba(255,255,255,0.7)" }} onClick={() => setMenuOpen(!menuOpen)}>
             <Icon name={menuOpen ? "X" : "Menu"} size={22} />
           </button>
         </div>
       </div>
       {menuOpen && (
-        <div className="md:hidden px-6 py-4 space-y-3" style={{ background: C.white, borderTop: `1px solid ${C.border}` }}>
+        <div className="md:hidden px-6 py-4 space-y-3" style={{ background: C.headerH, borderTop: `1px solid ${C.borderD}` }}>
           {["Продукты", "Решения", "О компании", "Контакты"].map((item) => (
-            <a key={item} href="#" className="block text-sm font-medium py-1" style={{ color: C.text }} onClick={() => setMenuOpen(false)}>{item}</a>
+            <a key={item} href="#" className="block text-sm font-medium py-1" style={{ color: "rgba(255,255,255,0.85)" }} onClick={() => setMenuOpen(false)}>{item}</a>
           ))}
-          <a href="#footer" className="block text-sm font-semibold px-4 py-2.5 text-center mt-3" style={{ background: C.accent, color: C.white }} onClick={() => setMenuOpen(false)}>Заказать</a>
+          <a href="#footer" className="block text-sm font-semibold px-4 py-2.5 text-center mt-3" style={{ background: C.btn, color: C.white }} onClick={() => setMenuOpen(false)}>Заказать</a>
         </div>
       )}
     </header>
@@ -114,11 +116,11 @@ function Hero() {
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-28">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest mb-7" style={{ color: C.accent }}>
-              <span className="w-6 h-px" style={{ background: C.accent }} />
+            <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest mb-7" style={{ color: C.btn }}>
+              <span className="w-6 h-px" style={{ background: C.btn }} />
               Стенды имитации движения
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4" style={{ color: C.dark }}>
+            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4" style={{ color: C.text }}>
               Стенды имитации<br />движения
             </h1>
             <p className="text-xl font-medium mb-3" style={{ color: C.muted }}>
@@ -129,24 +131,24 @@ function Hero() {
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#specs" className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 transition-colors"
-                style={{ background: C.accent, color: C.white }}
-                onMouseEnter={e => (e.currentTarget.style.background = C.accentH)}
-                onMouseLeave={e => (e.currentTarget.style.background = C.accent)}
+                style={{ background: C.btn, color: C.white }}
+                onMouseEnter={e => (e.currentTarget.style.background = C.btnH)}
+                onMouseLeave={e => (e.currentTarget.style.background = C.btn)}
               >
-                Подробнее <Icon name="ArrowRight" size={16} />
+                Узнать стоимость <Icon name="ArrowRight" size={16} />
               </a>
-              <a href="#footer" className="inline-flex items-center gap-2 text-sm font-medium px-6 py-3 transition-colors"
-                style={{ border: `1px solid ${C.border}`, color: C.text, background: C.white }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = C.accent; e.currentTarget.style.color = C.accent; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.text; }}
+              <a href="#footer" className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 transition-colors"
+                style={{ border: `2px solid ${C.outline}`, color: C.outline, background: "transparent" }}
+                onMouseEnter={e => { e.currentTarget.style.background = C.outline; e.currentTarget.style.color = C.white; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = C.outline; }}
               >
-                Запросить КП
+                Запросить цену
               </a>
             </div>
-            <div className="flex gap-10 mt-10 pt-8" style={{ borderTop: `1px solid ${C.border}` }}>
-              {[["15+", "лет опыта"], ["200+", "стендов в эксплуатации"], ["40+", "стран поставки"]].map(([n, l]) => (
-                <div key={l}>
-                  <div className="text-2xl font-bold" style={{ color: C.accent }}>{n}</div>
+            <div className="flex gap-6 mt-10 pt-8" style={{ borderTop: `1px solid ${C.border}` }}>
+              {[["15+", "лет опыта"], ["200+", "стендов"], ["40+", "стран"]].map(([n, l]) => (
+                <div key={l} className="px-4 py-3 text-center" style={{ background: C.btnBg }}>
+                  <div className="text-2xl font-bold" style={{ color: C.btn }}>{n}</div>
                   <div className="text-xs mt-0.5" style={{ color: C.muted }}>{l}</div>
                 </div>
               ))}
@@ -157,7 +159,7 @@ function Hero() {
             <div className="overflow-hidden shadow-lg" style={{ border: `1px solid ${C.border}` }}>
               <img src={PRODUCT_IMAGE} alt="Поворотный стол Остек" className="w-full h-80 object-cover" />
             </div>
-            <div className="absolute -bottom-4 -left-4 px-5 py-3 shadow-lg" style={{ background: C.accent }}>
+            <div className="absolute -bottom-4 -left-4 px-5 py-3 shadow-lg" style={{ background: C.btn }}>
               <div className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.75)" }}>Точность позиционирования</div>
               <div className="text-xl font-bold text-white">±0.001°</div>
             </div>
@@ -175,15 +177,15 @@ function ProductBlock() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16 items-start">
           <div>
-            <div className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: C.accent }}>Флагманский продукт</div>
-            <h2 className="text-3xl font-bold mb-2" style={{ color: C.dark }}>ОС-1000</h2>
+            <div className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: C.btn }}>Флагманский продукт</div>
+            <h2 className="text-3xl font-bold mb-2" style={{ color: C.text }}>ОС-1000</h2>
             <p className="text-xl font-medium mb-4" style={{ color: C.muted }}>Одноосевой поворотный стол</p>
             <p className="text-sm leading-relaxed mb-6" style={{ color: C.text }}>
               Компактный прецизионный стенд для калибровки одноосевых гироскопов, акселерометров и МЭМС-датчиков. Бесшумный прямой привод, закрытая обратная связь по энкодеру.
             </p>
-            <a href="#footer" className="inline-flex items-center gap-2 text-sm font-semibold transition-colors group" style={{ color: C.accent }}
-              onMouseEnter={e => (e.currentTarget.style.color = C.accentH)}
-              onMouseLeave={e => (e.currentTarget.style.color = C.accent)}
+            <a href="#footer" className="inline-flex items-center gap-2 text-sm font-semibold transition-colors group" style={{ color: C.btn }}
+              onMouseEnter={e => (e.currentTarget.style.color = C.btnH)}
+              onMouseLeave={e => (e.currentTarget.style.color = C.btn)}
             >
               Запросить спецификацию
               <Icon name="ArrowRight" size={15} className="group-hover:translate-x-1 transition-transform" />
@@ -201,7 +203,7 @@ function ProductBlock() {
             ].map(([name, value]) => (
               <div key={name} className="flex items-center justify-between py-3.5" style={{ borderBottom: `1px solid ${C.border}` }}>
                 <span className="text-sm" style={{ color: C.muted }}>{name}</span>
-                <span className="text-sm font-semibold font-mono" style={{ color: C.dark }}>{value}</span>
+                <span className="text-sm font-semibold font-mono" style={{ color: C.text }}>{value}</span>
               </div>
             ))}
           </div>
@@ -217,20 +219,20 @@ function Advantages() {
     <section className="py-20" style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
-          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.accent }}>Преимущества</div>
-          <h2 className="text-3xl font-bold" style={{ color: C.dark }}>Почему выбирают Остек</h2>
+          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.btn }}>Преимущества</div>
+          <h2 className="text-3xl font-bold" style={{ color: C.text }}>Почему выбирают Остек</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {advantages.map((a) => (
             <div key={a.title} className="p-8 cursor-default transition-all duration-200 group"
               style={{ background: C.light, border: `1px solid ${C.border}` }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.accent; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(42,122,140,0.12)`; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.btn; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(26,42,58,0.08)`; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.border; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
             >
-              <div className="w-10 h-10 flex items-center justify-center mb-5 transition-colors duration-200" style={{ background: `rgba(42,122,140,0.12)` }}>
-                <Icon name={a.icon} size={20} style={{ color: C.accent }} />
+              <div className="w-10 h-10 flex items-center justify-center mb-5 transition-colors duration-200" style={{ background: `rgba(26,42,58,0.08)` }}>
+                <Icon name={a.icon} size={20} style={{ color: C.btn }} />
               </div>
-              <h3 className="font-semibold mb-2" style={{ color: C.dark }}>{a.title}</h3>
+              <h3 className="font-semibold mb-2" style={{ color: C.text }}>{a.title}</h3>
               <p className="text-sm leading-relaxed" style={{ color: C.muted }}>{a.desc}</p>
             </div>
           ))}
@@ -246,17 +248,17 @@ function Specs() {
     <section id="specs" className="py-20" style={{ background: C.light, borderBottom: `1px solid ${C.border}` }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-10">
-          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.accent }}>Линейка продуктов</div>
-          <h2 className="text-3xl font-bold" style={{ color: C.dark }}>Технические характеристики</h2>
+          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.btn }}>Линейка продуктов</div>
+          <h2 className="text-3xl font-bold" style={{ color: C.text }}>Технические характеристики</h2>
         </div>
         <div className="overflow-x-auto" style={{ border: `1px solid ${C.border}` }}>
           <table className="w-full text-sm">
             <thead>
               <tr style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
                 <th className="text-left font-medium px-6 py-4 text-xs uppercase tracking-wider" style={{ color: C.muted }}>Параметр</th>
-                <th className="text-center font-semibold px-6 py-4" style={{ color: C.dark }}>ОС-1000<span className="block font-normal text-xs font-sans" style={{ color: C.muted }}>1-DOF</span></th>
-                <th className="text-center font-semibold px-6 py-4" style={{ color: C.dark }}>ОС-3000<span className="block font-normal text-xs font-sans" style={{ color: C.muted }}>3-DOF</span></th>
-                <th className="text-center font-semibold px-6 py-4 text-white" style={{ background: C.accent }}>ОС-6500<span className="block font-normal text-xs font-sans" style={{ color: "rgba(232,244,247,0.7)" }}>6-DOF</span></th>
+                <th className="text-center font-semibold px-6 py-4" style={{ color: C.text }}>ОС-1000<span className="block font-normal text-xs font-sans" style={{ color: C.muted }}>1-DOF</span></th>
+                <th className="text-center font-semibold px-6 py-4" style={{ color: C.text }}>ОС-3000<span className="block font-normal text-xs font-sans" style={{ color: C.muted }}>3-DOF</span></th>
+                <th className="text-center font-semibold px-6 py-4 text-white" style={{ background: C.btn }}>ОС-6500<span className="block font-normal text-xs font-sans" style={{ color: "rgba(232,244,247,0.7)" }}>6-DOF</span></th>
               </tr>
             </thead>
             <tbody>
@@ -265,7 +267,7 @@ function Specs() {
                   <td className="px-6 py-4" style={{ color: C.muted }}>{row.param}</td>
                   <td className="text-center px-6 py-4 font-mono" style={{ color: C.text }}>{row.os1000}</td>
                   <td className="text-center px-6 py-4 font-mono" style={{ color: C.text }}>{row.os3000}</td>
-                  <td className="text-center px-6 py-4 font-mono font-semibold" style={{ background: "rgba(42,122,140,0.08)", color: C.dark, borderLeft: `1px solid ${C.border}`, borderRight: `1px solid ${C.border}` }}>{row.os6500}</td>
+                  <td className="text-center px-6 py-4 font-mono font-semibold" style={{ background: "rgba(26,42,58,0.06)", color: C.text, borderLeft: `1px solid ${C.border}`, borderRight: `1px solid ${C.border}` }}>{row.os6500}</td>
                 </tr>
               ))}
             </tbody>
@@ -283,21 +285,21 @@ function Applications() {
     <section id="applications" className="py-20" style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
-          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.accent }}>Применение</div>
-          <h2 className="text-3xl font-bold" style={{ color: C.dark }}>Сферы применения</h2>
+          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.btn }}>Применение</div>
+          <h2 className="text-3xl font-bold" style={{ color: C.text }}>Сферы применения</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {applications.map((app) => (
             <div key={app.label} className="flex gap-4 items-start p-6 cursor-default transition-all duration-200"
               style={{ background: C.light, border: `1px solid ${C.border}` }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.accent; (e.currentTarget as HTMLElement).style.boxShadow = `0 2px 12px rgba(92,107,58,0.10)`; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.btn; (e.currentTarget as HTMLElement).style.boxShadow = `0 2px 12px rgba(26,42,58,0.08)`; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.border; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
             >
-              <div className="shrink-0 w-9 h-9 flex items-center justify-center" style={{ background: C.accentBg }}>
-                <Icon name={app.icon} size={18} style={{ color: C.accent }} />
+              <div className="shrink-0 w-9 h-9 flex items-center justify-center" style={{ background: C.btnBg }}>
+                <Icon name={app.icon} size={18} style={{ color: C.btn }} />
               </div>
               <div>
-                <h3 className="font-semibold text-sm mb-1" style={{ color: C.dark }}>{app.label}</h3>
+                <h3 className="font-semibold text-sm mb-1" style={{ color: C.text }}>{app.label}</h3>
                 <p className="text-xs leading-relaxed" style={{ color: C.muted }}>{app.desc}</p>
               </div>
             </div>
@@ -314,17 +316,17 @@ function Cases() {
     <section id="cases" className="py-20" style={{ background: C.white, borderBottom: `1px solid ${C.border}` }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
-          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.accent }}>Опыт</div>
-          <h2 className="text-3xl font-bold" style={{ color: C.dark }}>Реализованные проекты</h2>
+          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.btn }}>Опыт</div>
+          <h2 className="text-3xl font-bold" style={{ color: C.text }}>Реализованные проекты</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           {cases.map((c) => (
             <div key={c.num} className="transition-all duration-200 cursor-default"
               style={{ border: `1px solid ${C.border}` }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.accent; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(42,122,140,0.1)`; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.btn; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(26,42,58,0.08)`; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.border; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
             >
-              <div className="px-6 py-4 flex items-center justify-between" style={{ background: C.accent }}>
+              <div className="px-6 py-4 flex items-center justify-between" style={{ background: C.btn }}>
                 <span className="font-bold text-lg font-mono text-white">{c.num}</span>
                 <span className="text-xs font-medium uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.7)" }}>{c.tag}</span>
               </div>
@@ -340,8 +342,8 @@ function Cases() {
                 </div>
                 <div style={{ height: 1, background: C.border }} />
                 <div>
-                  <div className="text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: C.accent }}>Результат</div>
-                  <p className="text-sm font-semibold leading-relaxed" style={{ color: C.dark }}>{c.result}</p>
+                  <div className="text-xs font-medium uppercase tracking-wider mb-1.5" style={{ color: C.btn }}>Результат</div>
+                  <p className="text-sm font-semibold leading-relaxed" style={{ color: C.text }}>{c.result}</p>
                 </div>
               </div>
             </div>
@@ -360,15 +362,15 @@ function VideoSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.accent }}>Демонстрация</div>
-            <h2 className="text-3xl font-bold mb-4" style={{ color: C.dark }}>Стенд в действии</h2>
+            <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.btn }}>Демонстрация</div>
+            <h2 className="text-3xl font-bold mb-4" style={{ color: C.text }}>Стенд в действии</h2>
             <p className="text-sm leading-relaxed mb-6" style={{ color: C.muted }}>
               Посмотрите, как стенд ОС-6500 выполняет полный цикл калибровки БИНС за 12 минут. Видео доступно по запросу или на очной демонстрации в нашем демозале.
             </p>
             <button onClick={() => setOpen(true)} className="inline-flex items-center gap-2 text-sm font-medium px-5 py-2.5 transition-colors"
-              style={{ border: `1px solid ${C.accent}`, color: C.accent }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = C.accent; (e.currentTarget as HTMLElement).style.color = C.white; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = C.accent; }}
+              style={{ border: `1px solid ${C.btn}`, color: C.btn }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = C.btn; (e.currentTarget as HTMLElement).style.color = C.white; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = C.btn; }}
             >
               <Icon name="Play" size={15} />
               Смотреть видео
@@ -377,7 +379,7 @@ function VideoSection() {
           <div className="relative overflow-hidden shadow cursor-pointer group" style={{ border: `1px solid ${C.border}` }} onClick={() => setOpen(true)}>
             <img src={PRODUCT_IMAGE} alt="" className="w-full h-64 object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200" style={{ background: C.accent }}>
+              <div className="w-16 h-16 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200" style={{ background: C.btn }}>
                 <Icon name="Play" size={26} className="ml-1 text-white" />
               </div>
             </div>
@@ -387,18 +389,18 @@ function VideoSection() {
       {open && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6" style={{ background: "rgba(0,0,0,0.45)" }} onClick={() => setOpen(false)}>
           <div className="p-8 max-w-lg w-full text-center shadow-2xl" style={{ background: C.white, border: `1px solid ${C.border}` }} onClick={e => e.stopPropagation()}>
-            <div className="w-12 h-12 flex items-center justify-center mx-auto mb-4" style={{ background: C.accentBg }}>
-              <Icon name="Play" size={22} style={{ color: C.accent }} className="ml-0.5" />
+            <div className="w-12 h-12 flex items-center justify-center mx-auto mb-4" style={{ background: C.btnBg }}>
+              <Icon name="Play" size={22} style={{ color: C.btn }} className="ml-0.5" />
             </div>
-            <h3 className="font-bold text-lg mb-2" style={{ color: C.dark }}>Видео-демонстрация</h3>
+            <h3 className="font-bold text-lg mb-2" style={{ color: C.text }}>Видео-демонстрация</h3>
             <p className="text-sm mb-6" style={{ color: C.muted }}>Оставьте заявку — пришлём ссылку или пригласим на демонстрацию в нашем демозале.</p>
             <div className="flex gap-3 justify-center">
-              <a href="#footer" className="text-sm font-semibold px-5 py-2.5 text-white transition-colors" style={{ background: C.accent }}
-                onMouseEnter={e => (e.currentTarget.style.background = C.accentH)} onMouseLeave={e => (e.currentTarget.style.background = C.accent)}
+              <a href="#footer" className="text-sm font-semibold px-5 py-2.5 text-white transition-colors" style={{ background: C.btn }}
+                onMouseEnter={e => (e.currentTarget.style.background = C.btnH)} onMouseLeave={e => (e.currentTarget.style.background = C.btn)}
                 onClick={() => setOpen(false)}
               >Оставить заявку</a>
               <button onClick={() => setOpen(false)} className="text-sm font-medium px-5 py-2.5 transition-colors" style={{ border: `1px solid ${C.border}`, color: C.muted }}
-                onMouseEnter={e => (e.currentTarget.style.color = C.dark)} onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
+                onMouseEnter={e => (e.currentTarget.style.color = C.text)} onMouseLeave={e => (e.currentTarget.style.color = C.muted)}
               >Закрыть</button>
             </div>
           </div>
@@ -415,8 +417,8 @@ function FAQ() {
     <section className="py-20" style={{ background: C.light, borderBottom: `1px solid ${C.border}` }}>
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-12">
-          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.accent }}>Вопросы и ответы</div>
-          <h2 className="text-3xl font-bold" style={{ color: C.dark }}>Часто задаваемые вопросы</h2>
+          <div className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: C.btn }}>Вопросы и ответы</div>
+          <h2 className="text-3xl font-bold" style={{ color: C.text }}>Часто задаваемые вопросы</h2>
         </div>
         <div style={{ border: `1px solid ${C.border}` }}>
           {faqs.map((f, i) => (
@@ -426,9 +428,9 @@ function FAQ() {
                 onMouseLeave={e => (e.currentTarget.style.background = C.white)}
                 onClick={() => setOpen(open === i ? null : i)}
               >
-                <span className="font-medium text-sm leading-snug transition-colors" style={{ color: open === i ? C.accent : C.dark }}>{f.q}</span>
+                <span className="font-medium text-sm leading-snug transition-colors" style={{ color: open === i ? C.btn : C.text }}>{f.q}</span>
                 <span className={`ml-4 shrink-0 transition-transform duration-200 ${open === i ? "rotate-180" : ""}`}>
-                  <Icon name="ChevronDown" size={18} style={{ color: open === i ? C.accent : C.muted }} />
+                  <Icon name="ChevronDown" size={18} style={{ color: open === i ? C.btn : C.muted }} />
                 </span>
               </button>
               {open === i && (
@@ -450,7 +452,7 @@ function Footer() {
   const [sent, setSent] = useState(false);
 
   return (
-    <footer id="footer" style={{ background: C.dark, borderTop: `1px solid ${C.borderD}` }}>
+    <footer id="footer" style={{ background: C.header, borderTop: `1px solid ${C.borderD}` }}>
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 gap-16">
           <div>
@@ -468,7 +470,7 @@ function Footer() {
                 { icon: "Clock",      text: "Пн–Пт, 9:00–18:00 МСК" },
               ].map((item) => (
                 <div key={item.text} className="flex items-start gap-3">
-                  <Icon name={item.icon} size={15} style={{ color: C.accent, marginTop: 2, flexShrink: 0 }} />
+                  <Icon name={item.icon} size={15} style={{ color: "rgba(255,255,255,0.45)", marginTop: 2, flexShrink: 0 }} />
                   {item.href
                     ? <a href={item.href} className="text-sm transition-colors" style={{ color: "rgba(232,244,247,0.75)" }}
                         onMouseEnter={e => (e.currentTarget.style.color = C.white)}
@@ -484,7 +486,7 @@ function Footer() {
               <div className="grid grid-cols-2 gap-y-2 gap-x-4">
                 {["Продукты", "Решения", "Сертификаты", "Демозал", "О компании", "Контакты"].map((link) => (
                   <a key={link} href="#" className="text-sm transition-colors" style={{ color: "rgba(232,244,247,0.5)" }}
-                    onMouseEnter={e => (e.currentTarget.style.color = C.accent)}
+                    onMouseEnter={e => (e.currentTarget.style.color = C.white)}
                     onMouseLeave={e => (e.currentTarget.style.color = "rgba(232,244,247,0.5)")}
                   >{link}</a>
                 ))}
@@ -497,9 +499,9 @@ function Footer() {
             <p className="text-sm mb-6" style={{ color: "rgba(232,244,247,0.5)" }}>Инженер свяжется с вами в течение 2 рабочих часов</p>
 
             {sent ? (
-              <div className="p-8 text-center" style={{ border: `1px solid rgba(42,122,140,0.4)`, background: "rgba(42,122,140,0.1)" }}>
+              <div className="p-8 text-center" style={{ border: `1px solid rgba(42,122,140,0.4)`, background: "rgba(26,42,58,0.08)" }}>
                 <div className="w-10 h-10 flex items-center justify-center mx-auto mb-3" style={{ background: "rgba(42,122,140,0.2)" }}>
-                  <Icon name="Check" size={20} style={{ color: C.accent }} />
+                  <Icon name="Check" size={20} style={{ color: C.btn }} />
                 </div>
                 <p className="font-semibold mb-1 text-white">Заявка принята</p>
                 <p className="text-sm" style={{ color: "rgba(232,244,247,0.55)" }}>Наш инженер свяжется с вами в ближайшее время.</p>
@@ -516,8 +518,8 @@ function Footer() {
                     <input type={type} required={required} value={form[key as keyof typeof form]} placeholder={ph}
                       onChange={e => setForm({ ...form, [key]: e.target.value })}
                       className="w-full px-3 py-2.5 text-sm placeholder:opacity-30 focus:outline-none transition-colors"
-                      style={{ background: C.mid, border: `1px solid ${C.borderD}`, color: C.white }}
-                      onFocus={e => (e.currentTarget.style.borderColor = C.accent)}
+                      style={{ background: "rgba(255,255,255,0.08)", border: `1px solid ${C.borderD}`, color: C.white }}
+                      onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)")}
                       onBlur={e => (e.currentTarget.style.borderColor = C.borderD)}
                     />
                   </div>
@@ -527,15 +529,15 @@ function Footer() {
                   <textarea rows={3} value={form.comment} placeholder="DOF, грузоподъёмность, диапазон углов..."
                     onChange={e => setForm({ ...form, comment: e.target.value })}
                     className="w-full px-3 py-2.5 text-sm placeholder:opacity-30 focus:outline-none transition-colors resize-none"
-                    style={{ background: C.mid, border: `1px solid ${C.borderD}`, color: C.white }}
-                    onFocus={e => (e.currentTarget.style.borderColor = C.accent)}
+                    style={{ background: "rgba(255,255,255,0.08)", border: `1px solid ${C.borderD}`, color: C.white }}
+                    onFocus={e => (e.currentTarget.style.borderColor = C.btn)}
                     onBlur={e => (e.currentTarget.style.borderColor = C.borderD)}
                   />
                 </div>
                 <button type="submit" className="w-full font-semibold py-3 text-sm flex items-center justify-center gap-2 text-white transition-colors"
-                  style={{ background: C.accent }}
-                  onMouseEnter={e => (e.currentTarget.style.background = C.accentH)}
-                  onMouseLeave={e => (e.currentTarget.style.background = C.accent)}
+                  style={{ background: C.btn }}
+                  onMouseEnter={e => (e.currentTarget.style.background = C.btnH)}
+                  onMouseLeave={e => (e.currentTarget.style.background = C.btn)}
                 >
                   <Icon name="Send" size={15} />
                   Отправить заявку
@@ -547,7 +549,7 @@ function Footer() {
         </div>
       </div>
 
-      <div style={{ borderTop: `1px solid ${C.borderD}`, background: "#172E3A" }}>
+      <div style={{ borderTop: `1px solid ${C.borderD}`, background: "#060F18" }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs" style={{ color: "rgba(232,244,247,0.35)" }}>© 2024 ГК Остек. Все права защищены.</p>
           <div className="flex gap-5">
