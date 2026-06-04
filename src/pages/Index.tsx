@@ -127,9 +127,9 @@ function Header() {
             ))}
           </nav>
           <div className="hidden md:flex items-center gap-5">
-            <a href="tel:+74951234567" className="flex items-center gap-2 text-sm text-[#333333] font-medium hover:text-[#0055A4] transition-colors">
+            <a href="tel:+74957884444" className="flex items-center gap-2 text-sm text-[#333333] font-medium hover:text-[#0055A4] transition-colors">
               <Icon name="Phone" size={14} className="text-[#0055A4]" />
-              +7 (495) 123-45-67
+              +7 (495) 788-44-44
             </a>
             <a href="#footer" className="bg-[#0055A4] hover:bg-[#004490] text-white text-sm font-semibold px-5 py-2 transition-colors">
               Заказать
@@ -508,9 +508,11 @@ function Footer() {
             </p>
             <div className="space-y-3.5">
               {[
-                { icon: "MapPin", text: "125009, Москва, ул. Тверская, д. 16" },
-                { icon: "Phone", text: "+7 (495) 123-45-67", href: "tel:+74951234567" },
-                { icon: "Mail", text: "info@ostek.ru", href: "mailto:info@ostek.ru" },
+                { icon: "MapPin", text: "121467, Москва, ул. Молдавская, д. 5, стр. 2" },
+                { icon: "Phone", text: "+7 (495) 788-44-44 (многоканальный)", href: "tel:+74957884444" },
+                { icon: "Headphones", text: "8 800 700-39-39 (сервисный центр)", href: "tel:88007003939" },
+                { icon: "Printer", text: "+7 (495) 788-44-42 (факс)" },
+                { icon: "Mail", text: "test@ostec-group.ru", href: "mailto:test@ostec-group.ru" },
                 { icon: "Clock", text: "Пн–Пт, 9:00–18:00 МСК" },
               ].map((item) => (
                 <div key={item.text} className="flex items-start gap-3">
