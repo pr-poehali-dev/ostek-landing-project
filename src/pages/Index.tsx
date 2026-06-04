@@ -52,21 +52,21 @@ const faqs = [
   { q: "Есть ли у вас сертификаты?", a: "Да. Продукция сертифицирована по ГОСТ РВ 0015-002. Все стенды проходят метрологическую аттестацию. Документация предоставляется в комплекте поставки." },
 ];
 
-// ─── Palette (весенняя трава) ─────────────────────────────────────────────────
+// ─── Palette (Остек фирменный: чёрный + кислотно-зелёный) ────────────────────
 const C = {
-  header:  "#2D5A1B",   // тёмно-зелёный хедер
-  headerH: "#3A7022",   // чуть светлее для hover
-  btn:     "#3B7A28",   // кнопка — насыщенный зелёный
-  btnH:    "#2D5A1B",   // hover кнопки
-  accent:  "#3B7A28",   // акцентный зелёный
-  accentBg:"#EBF5E6",   // светло-зелёный фон карточек
-  light:   "#F7FAF5",   // основной фон секций
+  header:  "#111111",   // почти чёрный хедер
+  headerH: "#1A1A1A",   // чуть светлее для hover
+  btn:     "#7CC800",   // кислотно-зелёный — фирменный цвет Остек
+  btnH:    "#69AE00",   // hover кнопки
+  accent:  "#7CC800",   // акцентный
+  accentBg:"#F2FAE0",   // очень светлый зелёный фон карточек
+  light:   "#F8F8F8",   // основной фон секций
   white:   "#FFFFFF",
-  text:    "#1A2C14",   // основной текст
-  muted:   "#5A7A50",   // вторичный текст
-  border:  "#D4E8CC",   // граница
-  borderD: "#1E3D13",   // граница на тёмном
-  outline: "#3B7A28",   // кнопка с обводкой
+  text:    "#111111",   // основной текст
+  muted:   "#666666",   // вторичный текст
+  border:  "#E0E0E0",   // граница
+  borderD: "#2A2A2A",   // граница на тёмном
+  outline: "#7CC800",   // кнопка с обводкой
 };
 
 // ─── Header ───────────────────────────────────────────────────────────────────
@@ -114,6 +114,21 @@ function Header() {
   );
 }
 
+// декоративная полоска с точками — фирменный элемент Остек
+function DotsBar() {
+  return (
+    <div className="flex items-center gap-2 mb-8">
+      {[...Array(5)].map((_, i) => (
+        <span key={i} className="rounded-full" style={{
+          width: 10, height: 10,
+          background: i < 4 ? C.btn : "transparent",
+          border: i >= 4 ? `2px solid ${C.btn}` : "none",
+        }} />
+      ))}
+    </div>
+  );
+}
+
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   return (
@@ -121,6 +136,7 @@ function Hero() {
       <div className="max-w-7xl mx-auto px-6 py-20 md:py-28">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
+            <DotsBar />
             <div className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest mb-7" style={{ color: C.btn }}>
               <span className="w-6 h-px" style={{ background: C.btn }} />
               Стенды имитации движения
@@ -554,7 +570,7 @@ function Footer() {
         </div>
       </div>
 
-      <div style={{ borderTop: `1px solid ${C.borderD}`, background: "#1A3A0E" }}>
+      <div style={{ borderTop: `1px solid ${C.borderD}`, background: "#000000" }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs" style={{ color: "rgba(232,244,247,0.35)" }}>© 2024 ГК Остек. Все права защищены.</p>
           <div className="flex gap-5">
