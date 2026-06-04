@@ -6,21 +6,26 @@ const STYLE_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-35
 const LOGO_IMAGE = "https://cdn.poehali.dev/projects/c1e68221-34b2-4916-b8ef-350370ecb4ea/bucket/9b36bded-2f56-4896-bbcd-f789d81b7b48.jpg";
 
 function OstecLogo({ invert = false, className = "" }: { invert?: boolean; className?: string }) {
-  const color = invert ? "#FFFFFF" : "#111111";
-  const sub = invert ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)";
+  const c = invert ? "#FFFFFF" : "#111111";
+  const s = invert ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.5)";
   return (
-    <svg className={className} viewBox="0 0 160 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Эллипс-орбита */}
-      <ellipse cx="28" cy="26" rx="22" ry="9" stroke={color} strokeWidth="2" fill="none"/>
-      {/* Вертикальная линия */}
-      <line x1="28" y1="10" x2="28" y2="42" stroke={color} strokeWidth="2"/>
-      {/* Росток (листья) */}
-      <path d="M28 16 C22 10 16 12 18 18 C20 22 26 20 28 16Z" fill={color}/>
-      <path d="M28 16 C34 10 40 12 38 18 C36 22 30 20 28 16Z" fill={color}/>
+    <svg className={className} viewBox="0 0 180 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Большой внешний эллипс */}
+      <ellipse cx="30" cy="30" rx="26" ry="11" stroke={c} strokeWidth="1.8" fill="none"/>
+      {/* Малый внутренний эллипс */}
+      <ellipse cx="30" cy="30" rx="16" ry="6.5" stroke={c} strokeWidth="1.4" fill="none"/>
+      {/* Вертикальный стебель */}
+      <line x1="30" y1="8" x2="30" y2="52" stroke={c} strokeWidth="1.8"/>
+      {/* Левый лист */}
+      <path d="M30 18 C27 14 20 13 20 18 C20 22 27 22 30 18Z" fill={c}/>
+      {/* Правый лист */}
+      <path d="M30 18 C33 14 40 13 40 18 C40 22 33 22 30 18Z" fill={c}/>
+      {/* Кружок на вершине стебля */}
+      <circle cx="30" cy="10" r="2.5" fill={c}/>
       {/* Текст ostec */}
-      <text x="56" y="28" fill={color} fontSize="18" fontWeight="800" fontFamily="Montserrat, Arial, sans-serif" letterSpacing="0.5">ostec</text>
-      {/* Подпись */}
-      <text x="56" y="42" fill={sub} fontSize="8" fontFamily="Montserrat, Arial, sans-serif" letterSpacing="1.5" fontWeight="400">группа компаний</text>
+      <text x="64" y="32" fill={c} fontSize="20" fontWeight="800" fontFamily="Montserrat, Arial Black, Arial, sans-serif" letterSpacing="1">ostec</text>
+      {/* Подпись группа компаний */}
+      <text x="64" y="46" fill={s} fontSize="7.5" fontFamily="Montserrat, Arial, sans-serif" letterSpacing="1.8" fontWeight="500">группа компаний</text>
     </svg>
   );
 }
